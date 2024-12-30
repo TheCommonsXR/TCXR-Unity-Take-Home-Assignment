@@ -5,6 +5,7 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
+using TMPro;
 
 namespace Platformer.Mechanics
 {
@@ -32,6 +33,7 @@ namespace Platformer.Mechanics
         /*internal new*/ public Collider2D collider2d;
         /*internal new*/ public AudioSource audioSource;
         public Health health;
+        public TextMeshProUGUI healthReadout;
         public bool controlEnabled = true;
 
         bool jump;
@@ -68,6 +70,7 @@ namespace Platformer.Mechanics
             {
                 move.x = 0;
             }
+            healthReadout.text = health.getCurrentHP().ToString();
             UpdateJumpState();
             base.Update();
         }

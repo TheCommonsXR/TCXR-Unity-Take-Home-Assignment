@@ -20,7 +20,7 @@ namespace Platformer.Mechanics
         /// </summary>
         public bool IsAlive => currentHP > 0;
 
-        int currentHP;
+        [SerializeField] int currentHP;
 
         /// <summary>
         /// Increment the HP of the entity.
@@ -34,9 +34,9 @@ namespace Platformer.Mechanics
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement()
+        public void Decrement(int damage)
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -44,12 +44,17 @@ namespace Platformer.Mechanics
             }
         }
 
+        public int getCurrentHP()
+        {
+            return currentHP;
+        }
+
         /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            while (currentHP > 0) Decrement(1);
         }
 
         void Awake()
