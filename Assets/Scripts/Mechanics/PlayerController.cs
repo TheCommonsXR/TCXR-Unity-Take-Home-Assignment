@@ -18,21 +18,18 @@ namespace Platformer.Mechanics
         [SerializeField] private GameObject projectile;
         [SerializeField] private Transform spawnPosition;
         [SerializeField] private float projectileVelocity = 30;
-        [SerializeField] private int playerDamage;
         [SerializeField] private bool collisionImmunity;
+        [SerializeField] private int playerDamage;
+        [SerializeField] private float collisionImmunityTimer = 1f;
 
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
         public AudioClip deathAudio;
 
-        /// <summary>
         /// Max horizontal speed of the player.
-        /// </summary>
         public float maxSpeed = 7;
-        /// <summary>
         /// Initial jump velocity at the start of a jump.
-        /// </summary>
         public float jumpTakeOffSpeed = 7;
 
         public JumpState jumpState = JumpState.Grounded;
@@ -170,7 +167,7 @@ namespace Platformer.Mechanics
             collisionImmunity = true;
             collisionImmunityGraphic.SetActive(true);
 
-            Invoke("CollisionImmunityOver", 1f);
+            Invoke("CollisionImmunityOver", collisionImmunityTimer);
         }
 
         public void CollisionImmunityOver()
@@ -199,7 +196,6 @@ namespace Platformer.Mechanics
             damageText.gameObject.SetActive(false);
         }
 
-
         public enum JumpState
         {
             Grounded,
@@ -207,6 +203,21 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        public void SetPlayerDamage(int damage)
+        {
+            playerDamage = damage;
+        }
+
+        public void SetProjectileVelocity(float speed)
+        {
+            projectileVelocity = speed;
+        }
+
+        public void SetCollisionImmunityTimer(float time)
+        {
+            collisionImmunityTimer = time;
         }
 
         public int GetPlayerDamage => playerDamage;

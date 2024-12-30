@@ -7,9 +7,7 @@ using static Platformer.Core.Simulation;
 namespace Platformer.Gameplay
 {
 
-    /// <summary>
     /// Fired when a Player collides with an Enemy.
-    /// </summary>
     /// <typeparam name="EnemyCollision"></typeparam>
     public class PlayerEnemyCollision : Simulation.Event<PlayerEnemyCollision>
     {
