@@ -22,6 +22,11 @@ namespace Platformer.Mechanics
 
         [SerializeField] int currentHP;
 
+        public void setCurrentHP(int newHP)
+        {
+            currentHP = newHP;
+        }
+
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>

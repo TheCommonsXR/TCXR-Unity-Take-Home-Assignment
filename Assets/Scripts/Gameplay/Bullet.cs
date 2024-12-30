@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
 
     public float velocity;
 
+    public float deleteTime = 5;
 
     PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
@@ -30,7 +31,7 @@ public class Bullet : MonoBehaviour
 
     IEnumerator deleteBullet()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(deleteTime);
         Destroy(this.gameObject);
     }
 

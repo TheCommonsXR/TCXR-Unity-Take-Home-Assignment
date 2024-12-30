@@ -20,6 +20,7 @@ namespace Platformer.Mechanics
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
+        public AudioClip gunAudio;
 
         /// <summary>
         /// Max horizontal speed of the player.
@@ -83,9 +84,10 @@ namespace Platformer.Mechanics
             {
                GameObject projectile = Instantiate(bullet);
                 projectile.transform.position = new Vector3(transform.position.x, transform.position.y);
+                audioSource.PlayOneShot(gunAudio);
             }
 
-                healthReadout.text = health.getCurrentHP().ToString();
+            healthReadout.text = health.getCurrentHP().ToString();
             UpdateJumpState();
             base.Update();
         }
