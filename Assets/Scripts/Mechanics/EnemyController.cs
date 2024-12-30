@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using Platformer.Core;
+using Platformer.Mechanics;
+using Platformer.Model;
+using System.Collections;
 using System.Collections.Generic;
 using Platformer.Gameplay;
 using UnityEngine;
@@ -33,10 +36,27 @@ namespace Platformer.Mechanics
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        //using OnCollisionStay2D instead of OnCollisionEnter2D,
+        PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+
+        //using OnCollisionStay2D instead of OnCollisionEnter2D for player
+
 
         void OnCollisionStay2D(Collision2D collision)
         {
+
+            var bullet = collision.gameObject.GetComponent<Bullet>();
+
+            if (bullet != null)
+            {
+                this.GetComponent<Health>().Decrement(model.player.bulletDamage);
+
+                if (!(this.GetComponent<Health>().IsAlive))
+                {
+                    Schedule<EnemyDeath>().enemy = this.GetComponent<EnemyController>();
+                }
+                Destroy(bullet.gameObject);
+            }
+
             var player = collision.gameObject.GetComponent<PlayerController>();
             if (player != null)
             {
@@ -52,6 +72,8 @@ namespace Platformer.Mechanics
                 }
 
             }
+
+
         }
 
 

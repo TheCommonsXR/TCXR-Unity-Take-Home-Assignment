@@ -1,5 +1,8 @@
 using Platformer.Core;
 using Platformer.Mechanics;
+using Platformer.Model;
+using Platformer.Core;
+using Platformer.Mechanics;
 using static Platformer.Core.Simulation;
 
 namespace Platformer.Gameplay
@@ -9,13 +12,25 @@ namespace Platformer.Gameplay
     /// PlayerDeath event.
     /// </summary>
     /// <typeparam name="HealthIsZero"></typeparam>
+    /// 
+
+
+
+
     public class HealthIsZero : Simulation.Event<HealthIsZero>
     {
+
+        PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+
         public Health health;
 
         public override void Execute()
         {
-            Schedule<PlayerDeath>();
+            if (model.player.health.IsAlive == false)
+            {
+                Schedule<PlayerDeath>();
+            }
+
         }
     }
 }

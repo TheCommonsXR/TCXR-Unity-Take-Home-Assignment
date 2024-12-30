@@ -6,6 +6,8 @@ using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
 using TMPro;
+using UnityEditor;
+using UnityEngine.UIElements;
 
 namespace Platformer.Mechanics
 {
@@ -47,6 +49,9 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        public GameObject bullet;
+        public int bulletDamage;
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -73,10 +78,18 @@ namespace Platformer.Mechanics
             {
                 move.x = 0;
             }
-            healthReadout.text = health.getCurrentHP().ToString();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+               GameObject projectile = Instantiate(bullet);
+                projectile.transform.position = new Vector3(transform.position.x, transform.position.y);
+            }
+
+                healthReadout.text = health.getCurrentHP().ToString();
             UpdateJumpState();
             base.Update();
         }
+
 
         void UpdateJumpState()
         {
