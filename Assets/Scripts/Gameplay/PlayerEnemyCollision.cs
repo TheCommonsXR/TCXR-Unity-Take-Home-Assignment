@@ -1,7 +1,6 @@
 using Platformer.Core;
 using Platformer.Mechanics;
 using Platformer.Model;
-using UnityEngine;
 using static Platformer.Core.Simulation;
 
 namespace Platformer.Gameplay
@@ -27,7 +26,7 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    enemyHealth.Decrement(player.GetPlayerDamage);
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -46,7 +45,7 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                Schedule<PlayerDamage>().enemydamage = enemy.GetEnemyDamage;
             }
         }
     }

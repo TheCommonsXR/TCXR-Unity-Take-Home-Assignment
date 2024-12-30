@@ -5,6 +5,7 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
+using TMPro;
 
 namespace Platformer.Mechanics
 {
@@ -14,9 +15,13 @@ namespace Platformer.Mechanics
     /// </summary>
     public class PlayerController : KinematicObject
     {
+        [SerializeField] private int playerDamage;
+        [SerializeField] private TextMeshProUGUI damageText;
+
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
+        public AudioClip deathAudio;
 
         /// <summary>
         /// Max horizontal speed of the player.
@@ -128,6 +133,33 @@ namespace Platformer.Mechanics
 
             targetVelocity = move * maxSpeed;
         }
+
+        public void UpdateDamageText(int damage)
+        {
+            damageText.text = "-" + damage.ToString();
+        }
+
+        public void ToggleTextPopup()
+        {
+            if (!damageText.isActiveAndEnabled)
+            {
+                TurnOnTextPopup();
+            }
+
+            Invoke("TurnOffTextPopup", 0.5f);
+        }
+
+        public void TurnOnTextPopup()
+        {
+            damageText.gameObject.SetActive(true);
+        }
+
+        public void TurnOffTextPopup()
+        {
+            damageText.gameObject.SetActive(false);
+        }
+
+        public int GetPlayerDamage => playerDamage;
 
         public enum JumpState
         {

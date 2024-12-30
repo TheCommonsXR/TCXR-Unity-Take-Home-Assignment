@@ -12,6 +12,9 @@ namespace Platformer.Mechanics
     [RequireComponent(typeof(AnimationController), typeof(Collider2D))]
     public class EnemyController : MonoBehaviour
     {
+        // Default damage to 1, have designer set in Inspector
+        [SerializeField] private int enemyDamage = 1;
+
         public PatrolPath path;
         public AudioClip ouch;
 
@@ -51,5 +54,6 @@ namespace Platformer.Mechanics
             }
         }
 
+        public int GetEnemyDamage => enemyDamage;
     }
 }
