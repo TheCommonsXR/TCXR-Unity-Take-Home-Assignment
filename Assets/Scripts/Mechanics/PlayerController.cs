@@ -36,6 +36,9 @@ namespace Platformer.Mechanics
         public TextMeshProUGUI healthReadout;
         public bool controlEnabled = true;
 
+        public bool invincible;
+        public float invincibleTime;
+
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -139,6 +142,13 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        public IEnumerator Invincibility()
+        {
+            invincible = true;
+            yield return new WaitForSeconds(invincibleTime);
+            invincible = false;
         }
     }
 }

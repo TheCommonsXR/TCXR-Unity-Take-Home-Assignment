@@ -70,6 +70,8 @@ MonoBehaviour:
   health: {fileID: 0}
   healthReadout: {fileID: 8841808207194225875}
   controlEnabled: 1
+  invincible: 0
+  invincibleTime: 1
 --- !u!212 &212064061491315838
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -282,8 +284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffad43bb006db4856a9c527b89b48db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 1
-  currentHP: 0
+  maxHP: 5
+  currentHP: 5
 --- !u!61 &1824045667
 BoxCollider2D:
   m_ObjectHideFlags: 0

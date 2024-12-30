@@ -33,16 +33,27 @@ namespace Platformer.Mechanics
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        void OnCollisionEnter2D(Collision2D collision)
+        //using OnCollisionStay2D instead of OnCollisionEnter2D,
+
+        void OnCollisionStay2D(Collision2D collision)
         {
             var player = collision.gameObject.GetComponent<PlayerController>();
             if (player != null)
             {
-                var ev = Schedule<PlayerEnemyCollision>();
-                ev.player = player;
-                ev.enemy = this;
+                if(player.invincible == false && player.health.IsAlive)
+                {
+                    player.StartCoroutine("Invincibility");
+                    var ev = Schedule<PlayerEnemyCollision>();
+                    ev.player = player;
+                    ev.enemy = this;
+                    Vector2 difference = (player.transform.position - transform.position).normalized;
+                    Vector2 force = difference * 50;
+                    player.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+                }
+
             }
         }
+
 
         void Update()
         {
