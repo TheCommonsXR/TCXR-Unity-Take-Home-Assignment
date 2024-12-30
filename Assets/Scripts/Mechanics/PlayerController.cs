@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Platformer.Core;
 using Platformer.Gameplay;
-using static Platformer.Core.Simulation;
 using Platformer.Model;
-using Platformer.Core;
 using TMPro;
+using UnityEngine;
+using static Platformer.Core.Simulation;
 
 namespace Platformer.Mechanics
 {
@@ -15,10 +13,14 @@ namespace Platformer.Mechanics
     /// </summary>
     public class PlayerController : KinematicObject
     {
-        [SerializeField] private int playerDamage;
         [SerializeField] private TextMeshProUGUI damageText;
         [SerializeField] private GameObject collisionImmunityGraphic;
+        [SerializeField] private GameObject projectile;
+        [SerializeField] private Transform spawnPosition;
+        [SerializeField] private float projectileVelocity = 30;
+        [SerializeField] private int playerDamage;
         [SerializeField] private bool collisionImmunity;
+
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
@@ -35,8 +37,10 @@ namespace Platformer.Mechanics
 
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
-        /*internal new*/ public Collider2D collider2d;
-        /*internal new*/ public AudioSource audioSource;
+        /*internal new*/
+        public Collider2D collider2d;
+        /*internal new*/
+        public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
 
@@ -76,6 +80,11 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                ShootProjectile();
+            }
         }
 
         void UpdateJumpState()
@@ -125,14 +134,30 @@ namespace Platformer.Mechanics
             }
 
             if (move.x > 0.01f)
+            {
                 spriteRenderer.flipX = false;
+                spawnPosition.transform.position = new Vector2(transform.position.x + 0.3f, spawnPosition.transform.position.y);
+            }
             else if (move.x < -0.01f)
+            {
+
                 spriteRenderer.flipX = true;
+                spawnPosition.transform.position = new Vector2(transform.position.x - 0.3f, spawnPosition.transform.position.y);
+            }
 
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
 
             targetVelocity = move * maxSpeed;
+        }
+
+        public void ShootProjectile()
+        {
+            var projectileToShoot = Instantiate(projectile, spawnPosition.position, Quaternion.identity);
+
+            projectileToShoot.GetComponent<Projectile>().projectileVelocity = projectileVelocity;
+            projectileToShoot.GetComponent<Projectile>().flipX = spriteRenderer.flipX;
+            projectileToShoot.GetComponent<Projectile>().damage = playerDamage;
         }
 
         public void UpdateDamageText(int damage)
@@ -174,7 +199,6 @@ namespace Platformer.Mechanics
             damageText.gameObject.SetActive(false);
         }
 
-        public int GetPlayerDamage => playerDamage;
 
         public enum JumpState
         {
@@ -185,6 +209,7 @@ namespace Platformer.Mechanics
             Landed
         }
 
+        public int GetPlayerDamage => playerDamage;
         public bool GetCollisionImmunity => collisionImmunity;
     }
 }

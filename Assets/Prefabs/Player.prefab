@@ -58,8 +58,10 @@ MonoBehaviour:
   velocity: {x: 0, y: 0}
   damageText: {fileID: 6150182450516947141}
   collisionImmunityGraphic: {fileID: 6014328257588051158}
-  projectile: {fileID: 0}
-  spawnPosition: {fileID: 0}
+  projectile: {fileID: 8242628355631581438, guid: ba644de9fe2b2a649bd259262106d985,
+    type: 3}
+  spawnPosition: {fileID: 5284493621578293769}
+  projectileVelocity: 10
   playerDamage: 1
   collisionImmunity: 0
   jumpAudio: {fileID: 8300000, guid: 67975c08d56ceb147bad38572d805aa8, type: 3}
