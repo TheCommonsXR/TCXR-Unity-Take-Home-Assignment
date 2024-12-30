@@ -25,8 +25,10 @@ namespace Platformer.Gameplay
                     player.audioSource.PlayOneShot(player.ouchAudio);
 
                 player.animator.SetTrigger("hurt");
+
                 player.UpdateDamageText(enemydamage);
                 player.ToggleTextPopup();
+                player.ToggleCollisionImmunity();
             }
         }
     }

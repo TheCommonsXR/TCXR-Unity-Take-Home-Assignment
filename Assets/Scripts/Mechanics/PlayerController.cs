@@ -17,7 +17,8 @@ namespace Platformer.Mechanics
     {
         [SerializeField] private int playerDamage;
         [SerializeField] private TextMeshProUGUI damageText;
-
+        [SerializeField] private GameObject collisionImmunityGraphic;
+        [SerializeField] private bool collisionImmunity;
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
@@ -139,6 +140,20 @@ namespace Platformer.Mechanics
             damageText.text = "-" + damage.ToString();
         }
 
+        public void ToggleCollisionImmunity()
+        {
+            collisionImmunity = true;
+            collisionImmunityGraphic.SetActive(true);
+
+            Invoke("CollisionImmunityOver", 1f);
+        }
+
+        public void CollisionImmunityOver()
+        {
+            collisionImmunity = false;
+            collisionImmunityGraphic.SetActive(false);
+        }
+
         public void ToggleTextPopup()
         {
             if (!damageText.isActiveAndEnabled)
@@ -169,5 +184,7 @@ namespace Platformer.Mechanics
             InFlight,
             Landed
         }
+
+        public bool GetCollisionImmunity => collisionImmunity;
     }
 }

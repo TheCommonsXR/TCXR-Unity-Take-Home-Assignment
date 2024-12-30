@@ -1,6 +1,7 @@
 using Platformer.Core;
 using Platformer.Mechanics;
 using Platformer.Model;
+using UnityEngine;
 using static Platformer.Core.Simulation;
 
 namespace Platformer.Gameplay
@@ -42,6 +43,10 @@ namespace Platformer.Gameplay
                     Schedule<EnemyDeath>().enemy = enemy;
                     player.Bounce(2);
                 }
+            }
+            else if (player.GetCollisionImmunity)
+            {
+                return;
             }
             else
             {
