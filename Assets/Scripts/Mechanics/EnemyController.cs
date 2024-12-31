@@ -23,6 +23,9 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => _collider.bounds;
         public EnemyController enemy ;
+
+        //question 1 healthdamage
+        public float damage = 1;
         void Awake()
         {
            enemy  = GetComponent<EnemyController>();
