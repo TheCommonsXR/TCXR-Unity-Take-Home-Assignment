@@ -22,7 +22,7 @@ namespace Platformer.Gameplay
 
         public override void Execute()
         {
-            var willHurtEnemy = player.Bounds.center.y >= enemy.Bounds.max.y; 
+            var willHurtEnemy = player.Bounds.center.y >= enemy.Bounds.max.y;
 
             if (willHurtEnemy)
             {
@@ -46,26 +46,32 @@ namespace Platformer.Gameplay
                     player.Bounce(2);
                 }
             }
-           
-            
+
+
             else
             {
-                var playerHealth = player.health;
-                if (playerHealth != null)
+                if (player.immunityOn == false)
                 {
-                    playerHealth.Decrement(enemy.damage);
+                    player.StartImmunity();
+                    var playerHealth = player.health;
                     
-                    if (!playerHealth.IsAlive)
+                    if (playerHealth != null)
+                    {
+                        playerHealth.Decrement(enemy.damage);
+
+                        if (!playerHealth.IsAlive)
+                        {
+                            Schedule<PlayerDeath>();
+
+                        }
+                    }
+                    else
                     {
                         Schedule<PlayerDeath>();
-
                     }
+                    Debug.Log("Player Health: " + playerHealth.currentHP.ToString());
+
                 }
-                else
-                {
-                    Schedule<PlayerDeath>();
-                }
-                
             }
         }
     }

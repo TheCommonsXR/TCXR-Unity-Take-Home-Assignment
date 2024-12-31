@@ -49,6 +49,11 @@ namespace Platformer.Mechanics
         public float bulletDamage = 1f; 
         public bool isRight = true;
 
+        //Question 2 Timer
+        public bool immunityOn = false;
+
+        public float immunityStart = 0f;
+
         
 
         void Awake()
@@ -63,7 +68,14 @@ namespace Platformer.Mechanics
         protected override void Update()
         {
             //gun fire
-
+            if (immunityOn){
+                float immunityTime = Time.time - immunityStart;
+                Debug.Log("immunity running");
+                if (immunityTime >= 1){
+                    immunityOn = false;
+                    Debug.Log("immunity off");
+                }
+            }
             if (Input.GetKeyUp(KeyCode.E)){
                     GameObject newbullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
                     newbullet.GetComponent<BulletScript>().Instantiated(isRight, 1f, bulletDamage);
@@ -88,6 +100,10 @@ namespace Platformer.Mechanics
             base.Update();
         }
 
+        public void StartImmunity(){
+            immunityStart = Time.time; 
+            immunityOn = true;
+        }
         void UpdateJumpState()
         {
             jump = false;
