@@ -27,6 +27,7 @@ namespace Platformer.Mechanics
         /// </summary>
         public float jumpTakeOffSpeed = 7;
 
+
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
         /*internal new*/ public Collider2D collider2d;
@@ -42,6 +43,14 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        //code for Question 3 gun 
+
+        public GameObject bulletPrefab;
+        public float bulletDamage = 1f; 
+        public bool isRight = true;
+
+        
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -53,6 +62,13 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
+            //gun fire
+
+            if (Input.GetKeyUp(KeyCode.E)){
+                    GameObject newbullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                    newbullet.GetComponent<BulletScript>().Instantiated(isRight, 1f, bulletDamage);
+                
+            }
             if (controlEnabled)
             {
                 move.x = Input.GetAxis("Horizontal");
@@ -118,10 +134,14 @@ namespace Platformer.Mechanics
                 }
             }
 
-            if (move.x > 0.01f)
+            if (move.x > 0.01f){
                 spriteRenderer.flipX = false;
-            else if (move.x < -0.01f)
+                isRight = true;
+            }
+            else if (move.x < -0.01f){
                 spriteRenderer.flipX = true;
+                isRight = false;
+            }
 
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);

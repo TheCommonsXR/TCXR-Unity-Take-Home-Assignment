@@ -22,9 +22,10 @@ namespace Platformer.Mechanics
         SpriteRenderer spriteRenderer;
 
         public Bounds Bounds => _collider.bounds;
-
+        public EnemyController enemy ;
         void Awake()
         {
+           enemy  = GetComponent<EnemyController>();
             control = GetComponent<AnimationController>();
             _collider = GetComponent<Collider2D>();
             _audio = GetComponent<AudioSource>();
@@ -39,6 +40,32 @@ namespace Platformer.Mechanics
                 var ev = Schedule<PlayerEnemyCollision>();
                 ev.player = player;
                 ev.enemy = this;
+            }
+        }
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.tag == "Bullet"){
+                var enemyHealth = GetComponent<Health>();
+                var bulletScript = other.gameObject.GetComponent<BulletScript>();
+                float damage = 1;
+                if(bulletScript != null){
+                damage = bulletScript.healthDamage;
+                }
+                if (enemyHealth != null)
+                {
+                    enemyHealth.Decrement(damage);
+                    if(!enemyHealth.IsAlive)
+                    {
+                        Schedule<EnemyDeath>().enemy = enemy;
+                    }
+                   
+                }
+                else
+                {
+                   Schedule<EnemyDeath>().enemy = enemy;
+                 
+                }
+                Destroy(other.gameObject);
             }
         }
 
