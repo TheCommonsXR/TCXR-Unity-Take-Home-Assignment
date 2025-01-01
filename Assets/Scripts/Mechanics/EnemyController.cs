@@ -6,12 +6,13 @@ using static Platformer.Core.Simulation;
 
 namespace Platformer.Mechanics
 {
-    /// <summary>
     /// A simple controller for enemies. Provides movement control over a patrol path.
-    /// </summary>
     [RequireComponent(typeof(AnimationController), typeof(Collider2D))]
     public class EnemyController : MonoBehaviour
     {
+        // Default damage to 1, have designer set in Inspector
+        [SerializeField] private int enemyDamage = 1;
+
         public PatrolPath path;
         public AudioClip ouch;
 
@@ -29,6 +30,8 @@ namespace Platformer.Mechanics
             _collider = GetComponent<Collider2D>();
             _audio = GetComponent<AudioSource>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+
+            GameManager.Instance.enemyList.Add(this);
         }
 
         void OnCollisionEnter2D(Collision2D collision)
@@ -51,5 +54,11 @@ namespace Platformer.Mechanics
             }
         }
 
+        public void SetEnemyDamage(int damage)
+        {
+            enemyDamage = damage;
+        }
+
+        public int GetEnemyDamage => enemyDamage;
     }
 }

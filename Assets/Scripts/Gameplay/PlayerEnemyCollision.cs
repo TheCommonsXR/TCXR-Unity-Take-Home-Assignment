@@ -7,9 +7,7 @@ using static Platformer.Core.Simulation;
 namespace Platformer.Gameplay
 {
 
-    /// <summary>
     /// Fired when a Player collides with an Enemy.
-    /// </summary>
     /// <typeparam name="EnemyCollision"></typeparam>
     public class PlayerEnemyCollision : Simulation.Event<PlayerEnemyCollision>
     {
@@ -27,7 +25,7 @@ namespace Platformer.Gameplay
                 var enemyHealth = enemy.GetComponent<Health>();
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    enemyHealth.Decrement(player.GetPlayerDamage);
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
@@ -44,9 +42,13 @@ namespace Platformer.Gameplay
                     player.Bounce(2);
                 }
             }
+            else if (player.GetCollisionImmunity)
+            {
+                return;
+            }
             else
             {
-                Schedule<PlayerDeath>();
+                Schedule<PlayerDamage>().enemydamage = enemy.GetEnemyDamage;
             }
         }
     }
