@@ -9,6 +9,8 @@ public class BulletScript : MonoBehaviour
     private float forceAmt;
     public float healthDamage;
     private bool isRight;
+
+    public float aliveStart;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,12 +33,17 @@ public class BulletScript : MonoBehaviour
 
             }
         }
+        float timeAlive = Time.time - aliveStart;
+        if (timeAlive > 2){
+            Destroy(this.gameObject);
+                    }
     }
     public void Instantiated(bool directionInput, float forceFactor, float damage)
     {
         isRight = directionInput;
         forceAmt = forceFactor;
         healthDamage = damage;
+        aliveStart = Time.time;
     }
 }
 

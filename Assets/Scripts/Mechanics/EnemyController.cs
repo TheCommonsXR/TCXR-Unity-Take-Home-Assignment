@@ -28,13 +28,14 @@ namespace Platformer.Mechanics
         public float damage = 1;
         void Awake()
         {
+
            enemy  = GetComponent<EnemyController>();
             control = GetComponent<AnimationController>();
             _collider = GetComponent<Collider2D>();
             _audio = GetComponent<AudioSource>();
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
-
+    
         void OnCollisionEnter2D(Collision2D collision)
         {
             var player = collision.gameObject.GetComponent<PlayerController>();
@@ -60,7 +61,6 @@ namespace Platformer.Mechanics
                     
                     if(!enemyHealth.IsAlive)
                     {
-                        Debug.Log("shot");
                         Schedule<EnemyDeath>().enemy = enemy;
                     }
                    
@@ -70,7 +70,7 @@ namespace Platformer.Mechanics
                    Schedule<EnemyDeath>().enemy = enemy;
                  
                 }
-                //Destroy(other.gameObject);
+                Destroy(other.gameObject);
             }
         }
 
