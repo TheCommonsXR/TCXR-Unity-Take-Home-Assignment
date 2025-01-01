@@ -50,15 +50,17 @@ namespace Platformer.Mechanics
             if (other.gameObject.tag == "Bullet"){
                 var enemyHealth = GetComponent<Health>();
                 var bulletScript = other.gameObject.GetComponent<BulletScript>();
-                float damage = 1;
+                float damage = 0;
                 if(bulletScript != null){
                 damage = bulletScript.healthDamage;
                 }
                 if (enemyHealth != null)
                 {
                     enemyHealth.Decrement(damage);
+                    
                     if(!enemyHealth.IsAlive)
                     {
+                        Debug.Log("shot");
                         Schedule<EnemyDeath>().enemy = enemy;
                     }
                    
@@ -68,7 +70,7 @@ namespace Platformer.Mechanics
                    Schedule<EnemyDeath>().enemy = enemy;
                  
                 }
-                Destroy(other.gameObject);
+                //Destroy(other.gameObject);
             }
         }
 

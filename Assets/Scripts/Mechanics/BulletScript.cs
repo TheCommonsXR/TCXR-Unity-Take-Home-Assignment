@@ -36,7 +36,7 @@ public class BulletScript : MonoBehaviour
     {
         isRight = directionInput;
         forceAmt = forceFactor;
-        healthDamage = damage*.1f;
+        healthDamage = damage;
     }
 }
 

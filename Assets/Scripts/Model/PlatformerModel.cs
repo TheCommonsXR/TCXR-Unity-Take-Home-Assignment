@@ -27,6 +27,8 @@ namespace Platformer.Model
         /// </summary>
         public Transform spawnPoint;
 
+        public GamemodeTemplate gamemode;
+
         /// <summary>
         /// A global jump modifier applied to all initial jump velocities.
         /// </summary>

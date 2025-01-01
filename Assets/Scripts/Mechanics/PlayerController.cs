@@ -63,6 +63,9 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+            transform.position = model.gamemode.startPos.position;
+            health.maxHP = model.gamemode.maxHP;
+            health.Increment(health.maxHP);
         }
 
         protected override void Update()

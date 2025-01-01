@@ -13,7 +13,7 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public float maxHP = 1;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
@@ -25,19 +25,24 @@ namespace Platformer.Mechanics
         /// <summary>
         /// Increment the HP of the entity.
         /// </summary>
-        public void Increment()
+        public void Increment(float incrAmt)
         {
-            currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            if (incrAmt != null){
+            currentHP = Mathf.Clamp(currentHP + (1*incrAmt), 0, maxHP);
+            }
+           else{
+            currentHP = Mathf.Clamp(currentHP + (1), 0, maxHP);
+            }
         }
 
         /// <summary>
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement(float healthPercentage = 1f)
+        public void Decrement(float healthPercentage)
         {
 
-            currentHP = Mathf.Clamp(currentHP - (1*healthPercentage), 0, maxHP);
+            currentHP = Mathf.Clamp(currentHP - (healthPercentage), 0, maxHP);
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -50,7 +55,7 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            while (currentHP > 0) Decrement(1);
         }
 
         void Awake()
