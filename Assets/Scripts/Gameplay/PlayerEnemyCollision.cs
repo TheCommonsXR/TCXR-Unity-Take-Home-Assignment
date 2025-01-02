@@ -1,3 +1,4 @@
+using System.Collections;
 using Platformer.Core;
 using Platformer.Mechanics;
 using Platformer.Model;
@@ -15,6 +16,7 @@ namespace Platformer.Gameplay
     {
         public EnemyController enemy;
         public PlayerController player;
+
 
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
@@ -42,11 +44,35 @@ namespace Platformer.Gameplay
                 {
                     Schedule<EnemyDeath>().enemy = enemy;
                     player.Bounce(2);
+                    Debug.Log("You did -1 hp to the enemy!");
                 }
             }
+
+            ///<summary>
+            /// Question #1
+            /// This gets the player health from the player then will see if it exists, and if it does it will go through decrease the amount of health of the player
+            /// and if the player's health reaches zero the player will die then respawn back in the beginning.
+            /// If it doesn't exist aka is null then player will die then respawn.
+            /// </summary>
             else
             {
-                Schedule<PlayerDeath>();
+                var playerHealth = player.GetComponent<Health>();
+                if (playerHealth != null)
+                {
+                    playerHealth.Decrement();
+                    if (!playerHealth.IsAlive)
+                    {
+                        Schedule<PlayerDeath>();
+                        Debug.Log("You died!");
+                        Schedule<PlayerSpawn>();
+                    }
+
+                }
+                else
+                {
+                    Schedule<PlayerDeath>();
+                    Schedule<PlayerSpawn>();
+                }
             }
         }
     }
