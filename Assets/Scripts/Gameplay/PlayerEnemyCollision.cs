@@ -60,6 +60,11 @@ namespace Platformer.Gameplay
                 if (playerHealth != null)
                 {
                     playerHealth.Decrement();
+                    ///<summary>
+                    ///Question #2
+                    ///I put the immunity here because when the player should get hit by an enemy, the player shouldn't lose more damage after losing one hp.
+                    /// </summary>
+                    player.ImmunityActivated();
                     if (!playerHealth.IsAlive)
                     {
                         Schedule<PlayerDeath>();
@@ -67,11 +72,6 @@ namespace Platformer.Gameplay
                         Schedule<PlayerSpawn>();
                     }
 
-                }
-                else
-                {
-                    Schedule<PlayerDeath>();
-                    Schedule<PlayerSpawn>();
                 }
             }
         }
