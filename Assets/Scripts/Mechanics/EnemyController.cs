@@ -22,7 +22,7 @@ namespace Platformer.Mechanics
         SpriteRenderer spriteRenderer;
 
         public Bounds Bounds => _collider.bounds;
-        public float damage = 1f;
+        public int damage = 1;
 
         void Awake()
         {
@@ -52,5 +52,10 @@ namespace Platformer.Mechanics
             }
         }
 
+
+        public void TakeDamage(int damage)
+        {
+            
+        }
     }
 }
