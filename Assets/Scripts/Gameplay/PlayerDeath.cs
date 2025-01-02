@@ -13,11 +13,11 @@ namespace Platformer.Gameplay
     public class PlayerDeath : Simulation.Event<PlayerDeath>
     {
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
-
         public override void Execute()
         {
             var player = model.player;
-            if (player.health.IsAlive)
+            //Added ! before if statement so that Death logic occurs is IsAlive is FALSE
+            if (!player.health.IsAlive)
             {
                 player.health.Die();
                 model.virtualCamera.m_Follow = null;

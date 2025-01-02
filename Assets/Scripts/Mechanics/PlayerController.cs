@@ -42,6 +42,10 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        //FOR PROJECTILE        Q3
+        public GameObject projectilePrefab; //REFERENCE TO PROJECTILE
+        public Transform shootPoint; // LOCATION WHERE PROJECTILE SPAWNS
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -63,6 +67,12 @@ namespace Platformer.Mechanics
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+
+                if (Input.GetKeyDown(KeyCode.LeftShift)) // IF PLAYER CLICKS LEFT SHIFT KEY, SHOOT PROJECTILE       Q3
+                {
+                    Shoot();
+                }
+
             }
             else
             {
@@ -70,6 +80,19 @@ namespace Platformer.Mechanics
             }
             UpdateJumpState();
             base.Update();
+        }
+
+        void Shoot() // SHOOT FUNCTION FOR PROJECTILES      Q3
+        {
+            // INSTANTIATE PROJECTILE AT SPAWN POINT        Q3
+            var projectile = Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
+
+            // DETERMINE SHOOT DIRECTION BASED ON SPRITE'S FLIPX     Q3
+            var spriteRenderer = GetComponent<SpriteRenderer>();
+            float shootDirection = spriteRenderer.flipX ? -1f : 1f; // -1 IF FLIPPED, 1 OTHERWISE
+
+            // PASS SHOOT DIRECTION TO PROJECTILE.CS SCRIPT THROUGH INITIALIZE FUNCTION     Q3
+            projectile.GetComponent<Projectile>().Initialize(new Vector2(shootDirection, 0));
         }
 
         void UpdateJumpState()
