@@ -42,6 +42,17 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        /// <summary>
+        /// Question #2
+        /// I added an immune timer to the player so that when the player collides they will have an immunity for a little bit to help not have problems with colliding 
+        /// with enemies.
+        /// </summary>
+
+        public float immuneTime = 1f;
+        private float immunityTimerEnd = 0f;
+        private bool isPlayerImmune = false;
+
+
         void Awake()
         {
             health = GetComponent<Health>();
@@ -68,8 +79,35 @@ namespace Platformer.Mechanics
             {
                 move.x = 0;
             }
+
+            ///<summary>
+            ///Question #2
+            /// </summary>
+            if (isPlayerImmune)
+            {
+                immunityTimerEnd -= Time.deltaTime;
+
+                if (immunityTimerEnd <= 0f)
+                {
+                    isPlayerImmune = false;
+                    immunityTimerEnd = 0f;
+                }
+            }
+
             UpdateJumpState();
             base.Update();
+        }
+
+        ///<summary>
+        ///Question #2
+        /// </summary>
+        public void ImmunityActivated()
+        {
+            if (!isPlayerImmune)
+            {
+                isPlayerImmune = true;
+                immunityTimerEnd = immuneTime;
+            }
         }
 
         void UpdateJumpState()
