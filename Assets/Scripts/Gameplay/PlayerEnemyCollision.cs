@@ -41,12 +41,24 @@ namespace Platformer.Gameplay
                 else
                 {
                     Schedule<EnemyDeath>().enemy = enemy;
-                    player.Bounce(2);
+                    player.Bounce(2); //When player jumps on enemy, enemy dies and player bounces
                 }
             }
             else
             {
-                Schedule<PlayerDeath>();
+                // GETS PLAYER HEALTH UPON COLLISION        Q1
+                var playerHealth = player.GetComponent<Health>();
+
+                // CHECKS IF PLAYER IS IMMUNE. IF NOT, PROCEED
+                if (!playerHealth.isImmune)
+                {
+                    //DECREMENT PLAYER HEALTH       Q1
+                    playerHealth.Decrement();
+
+                    //GRANT PLAYER IMMUNITY         Q2
+                    playerHealth.StartCoroutine(playerHealth.GrantImmunity());
+
+                }
             }
         }
     }
