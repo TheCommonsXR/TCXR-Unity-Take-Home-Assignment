@@ -1,6 +1,7 @@
 using System;
 using Platformer.Gameplay;
 using UnityEngine;
+using UnityEngine.UI;
 using static Platformer.Core.Simulation;
 
 namespace Platformer.Mechanics
@@ -13,7 +14,7 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public int maxHP = 100;
 
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
@@ -22,21 +23,40 @@ namespace Platformer.Mechanics
 
         int currentHP;
 
-        /// <summary>
-        /// Increment the HP of the entity.
-        /// </summary>
-        public void Increment()
+        public Text healthText;
+
+        private void Awake()
         {
-            currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            currentHP = maxHP;
+            UpdateHealthUI();
         }
 
         /// <summary>
-        /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
-        /// current HP reaches 0.
+        /// Starts entity with MaxHP
         /// </summary>
-        public void Decrement()
+        private void Start()
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            currentHP = maxHP;
+            UpdateHealthUI();
+        }
+        /// <summary>
+        /// Increment the HP of the entity.
+        /// </summary>
+
+        public void Increment()
+        {
+            currentHP = Mathf.Clamp(currentHP + 1, 0, maxHP);
+            UpdateHealthUI();
+        }
+
+        ///<summary>
+        ///apply damage to entity. will trigger a HealthIsZero event when
+        /// current HP reaches 0.
+        ///</summary>
+        public void TakeDamage(int damage)
+        {
+            currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
+            UpdateHealthUI();
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
@@ -49,12 +69,18 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Die()
         {
-            while (currentHP > 0) Decrement();
+            while (currentHP > 0) TakeDamage(1);
         }
 
-        void Awake()
+        ///<summary>
+        ///update the Ui to show current HP
+        ///</summary>
+        void UpdateHealthUI()
         {
-            currentHP = maxHP;
+            if(healthText != null)
+            {
+                healthText.text = "Health: " + currentHP;
+            }
         }
     }
 }

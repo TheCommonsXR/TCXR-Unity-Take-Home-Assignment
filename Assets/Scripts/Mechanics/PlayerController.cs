@@ -5,6 +5,7 @@ using Platformer.Gameplay;
 using static Platformer.Core.Simulation;
 using Platformer.Model;
 using Platformer.Core;
+using UnityEngine.Rendering;
 
 namespace Platformer.Mechanics
 {
@@ -41,6 +42,8 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public Bounds Bounds => collider2d.bounds;
+
+        private bool isImmune = false;
 
         void Awake()
         {
@@ -129,6 +132,24 @@ namespace Platformer.Mechanics
             targetVelocity = move * maxSpeed;
         }
 
+        /// <summary>
+        /// method to handle player damage with an immunity period
+        /// </summary>
+
+        public void TakeDamage(int damage)
+        {
+            if (isImmune) return;
+
+            health.TakeDamage(damage);
+            StartCoroutine(ImmunityCoroutine());
+        }
+
+        private IEnumerator ImmunityCoroutine()
+        {
+            isImmune = true;
+            yield return new WaitForSeconds(1f);
+            isImmune = false;
+        }
         public enum JumpState
         {
             Grounded,
