@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
@@ -13,8 +14,11 @@ namespace Platformer.Mechanics
         /// <summary>
         /// The maximum hit points for the entity.
         /// </summary>
-        public int maxHP = 1;
+        public int maxHP = 1; // increased to a basis of 5 this is still changeable in editor but i wanted to make a minimum of a higher value here to
+        // this is also an increase to the enemy so i lowered it back down to 1 for them in the editor
 
+        public int damage ;
+        private Collider2D playerCollider;
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
@@ -37,24 +41,16 @@ namespace Platformer.Mechanics
         public void Decrement()
         {
             currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
-            if (currentHP == 0)
-            {
-                var ev = Schedule<HealthIsZero>();
-                ev.health = this;
-            }
+
         }
 
         /// <summary>
         /// Decrement the HP of the entitiy until HP reaches 0.
         /// </summary>
-        public void Die()
-        {
-            while (currentHP > 0) Decrement();
-        }
+
 
         void Awake()
         {
-            currentHP = maxHP;
-        }
+            currentHP = maxHP;        }
     }
 }

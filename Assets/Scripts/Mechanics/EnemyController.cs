@@ -14,7 +14,6 @@ namespace Platformer.Mechanics
     {
         public PatrolPath path;
         public AudioClip ouch;
-
         internal PatrolPath.Mover mover;
         internal AnimationController control;
         internal Collider2D _collider;

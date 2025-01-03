@@ -1,6 +1,8 @@
 using Platformer.Core;
+using System;
 using Platformer.Mechanics;
 using Platformer.Model;
+using System.Collections;
 using UnityEngine;
 using static Platformer.Core.Simulation;
 
@@ -17,7 +19,6 @@ namespace Platformer.Gameplay
         public PlayerController player;
 
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
-
         public override void Execute()
         {
             var willHurtEnemy = player.Bounds.center.y >= enemy.Bounds.max.y;
@@ -25,6 +26,7 @@ namespace Platformer.Gameplay
             if (willHurtEnemy)
             {
                 var enemyHealth = enemy.GetComponent<Health>();
+
                 if (enemyHealth != null)
                 {
                     enemyHealth.Decrement();
@@ -46,8 +48,12 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                Debug.Log("is this instantly killing me?");
+                player.playerHealth.Decrement();
+                player.playerHealth.TriggerInvul();
             }
         }
+
     }
+
 }
