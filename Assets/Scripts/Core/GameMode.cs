@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewGameMode", menuName = "Game Mode")]
+[CreateAssetMenu(fileName = "NewGameMode", menuName = "Game Mode Creator")]
 
 public class GameMode : ScriptableObject
 {
+    [Header("Name of the gamemode you wish.")]
     public string modeName;
 
     [Header("Player health information")]
@@ -23,6 +24,7 @@ public class GameMode : ScriptableObject
 
     [Header("Player Starting Location")]
     public Vector3 startingPosition = Vector3.zero;
+
 
 
 }
