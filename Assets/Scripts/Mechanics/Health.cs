@@ -3,6 +3,7 @@ using System.Collections;
 using Platformer.Gameplay;
 using UnityEngine;
 using static Platformer.Core.Simulation;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Platformer.Mechanics
 {
@@ -15,7 +16,8 @@ namespace Platformer.Mechanics
         /// The maximum hit points for the entity.
         /// </summary>
         public int maxHP = 1; // increased to a basis of 5 this is still changeable in editor but i wanted to make a minimum of a higher value here to
-        // this is also an increase to the enemy so i lowered it back down to 1 for them in the editor
+                              // this is also an increase to the enemy so i lowered it back down to 1 for them in the editor
+        public EnemyController enemy;
 
         public int damage ;
         private Collider2D playerCollider;
@@ -38,9 +40,15 @@ namespace Platformer.Mechanics
         /// Decrement the HP of the entity. Will trigger a HealthIsZero event when
         /// current HP reaches 0.
         /// </summary>
-        public void Decrement()
+        public void Decrement(int dmg)
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            currentHP = Mathf.Clamp(currentHP - dmg, 0, maxHP);
+
+            if (currentHP <= 0)
+            {
+                Debug.Log("We are killing the slimes");
+                Schedule<EnemyDeath>().enemy = enemy;
+            }
 
         }
 

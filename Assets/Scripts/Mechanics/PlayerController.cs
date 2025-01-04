@@ -38,6 +38,11 @@ namespace Platformer.Mechanics
 
         public bool controlEnabled = true;
 
+        public GameObject projectilePrefab; // prefab for the projectile i just used the bush hope thats okay.
+        public Transform spawnPoint; // spawn point for the projectile
+        public float projectileSpeed = 5f;// speed for the projectile also i just made it 10 as a basis
+
+
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -59,13 +64,19 @@ namespace Platformer.Mechanics
         {
             if (controlEnabled)
             {
+
                 move.x = Input.GetAxis("Horizontal");
+
                 if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
                     jumpState = JumpState.PrepareToJump;
                 else if (Input.GetButtonUp("Jump"))
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
+                }
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    FireProjectile();
                 }
             }
             else
@@ -122,10 +133,15 @@ namespace Platformer.Mechanics
                 }
             }
 
-            if (move.x > 0.01f)
-                spriteRenderer.flipX = false;
-            else if (move.x < -0.01f)
-                spriteRenderer.flipX = true;
+            if (move.x > 0.01f) // sorry about swapping these i just prefer this over flipping the renderer, it also makes how i get the forward face easier.
+            {
+                //spriteRenderer.flipX = false;
+                transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+            }
+            else if (move.x < -0.01f) {
+                // spriteRenderer.flipX = true;
+                transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+            }
 
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
@@ -133,6 +149,13 @@ namespace Platformer.Mechanics
             targetVelocity = move * maxSpeed;
         }
 
+        void FireProjectile()
+        {
+            float facingDirection = transform.localScale.x > 0 ? 1 : -1;
+            GameObject projectile = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
+
+            projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(facingDirection * projectileSpeed, 0);
+        }
         public enum JumpState
         {
             Grounded,

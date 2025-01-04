@@ -17,7 +17,7 @@ namespace Platformer.Gameplay
     {
         public EnemyController enemy;
         public PlayerController player;
-
+        public int jumpDamage = 10;// set base of 10 to make sure it dies
         PlatformerModel model = Simulation.GetModel<PlatformerModel>();
         public override void Execute()
         {
@@ -29,7 +29,7 @@ namespace Platformer.Gameplay
 
                 if (enemyHealth != null)
                 {
-                    enemyHealth.Decrement();
+                    enemyHealth.Decrement(jumpDamage);
                     if (!enemyHealth.IsAlive)
                     {
                         Schedule<EnemyDeath>().enemy = enemy;
