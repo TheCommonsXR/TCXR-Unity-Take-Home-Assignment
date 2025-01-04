@@ -29,16 +29,30 @@ namespace Platformer.Mechanics
         public EnemyController enemy;
 
 
+
+
         /// <summary>
         /// Indicates if the entity should be considered 'alive'.
         /// </summary>
         public bool isAlive = true;
         int currentHP;
 
-        /// <summary>
-        /// Increment the HP of the entity.
-        /// </summary>
-        public void Increment()
+
+
+        public void Awake()
+        {
+            if (GameModeManager.Instance != null && GameModeManager.Instance.currentGameMode != null)
+            {
+                maxHP = GameModeManager.Instance.currentGameMode.playerHealth;
+                InvulnDuration = GameModeManager.Instance.currentGameMode.invulnerabilityTime;
+                canTakeDamage = GameModeManager.Instance.currentGameMode.canTakeDamage;
+            }
+            currentHP = maxHP;
+        }
+            /// <summary>
+            /// Increment the HP of the entity.
+            /// </summary>
+            public void Increment()
         {
             while(currentHP < maxHP)
             {
@@ -89,11 +103,7 @@ namespace Platformer.Mechanics
                 ev.playerHealth = this;
             }
         }
-        void Awake()
-        {
-            currentHP = maxHP;
-            Debug.Log(currentHP);
-        }
+
 
         public void TriggerInvul()
         {

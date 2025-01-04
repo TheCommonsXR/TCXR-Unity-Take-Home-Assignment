@@ -154,6 +154,16 @@ namespace Platformer.Mechanics
             float facingDirection = transform.localScale.x > 0 ? 1 : -1;
             GameObject projectile = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
 
+            var projectileMaking = projectile.GetComponent<Projectile>();
+            if (projectileMaking != null && GameModeManager.Instance != null)
+            {
+                // adding in the gamemode specifics for the projectiles
+
+                projectileMaking.ConfigureProjectile(
+                    GameModeManager.Instance.currentGameMode.projectileDamage,
+                    GameModeManager.Instance.currentGameMode.projectileDespawnTime
+                    );
+            }
             projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(facingDirection * projectileSpeed, 0);
         }
         public enum JumpState
