@@ -11,7 +11,7 @@ using UnityEditor;
 //Checks if we are in a certain template, as some scripts are template-specific.
 [InitializeOnLoad]
 public class TemplateEditorDetection : Editor {
-
+    [System.Obsolete]
     static TemplateEditorDetection() {
 
         //Get the current definition symbols

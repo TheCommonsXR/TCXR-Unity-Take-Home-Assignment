@@ -82,5 +82,10 @@ namespace Platformer.Mechanics
                 healthText.text = "Health: " + currentHP;
             }
         }
+
+        public void SetHealth(int health)
+        {
+            currentHP = health;
+        }
     }
 }

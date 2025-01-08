@@ -43,6 +43,8 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
+        public object OnCollision2D { get; internal set; }
+
         private bool isImmune = false;
 
         void Awake()

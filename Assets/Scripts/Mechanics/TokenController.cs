@@ -19,11 +19,13 @@ namespace Platformer.Mechanics
         float nextFrameTime = 0;
 
         [ContextMenu("Find All Tokens")]
+        [System.Obsolete]
         void FindAllTokensInScene()
         {
             tokens = UnityEngine.Object.FindObjectsOfType<TokenInstance>();
         }
 
+        [System.Obsolete]
         void Awake()
         {
             //if tokens are empty, find all instances.
